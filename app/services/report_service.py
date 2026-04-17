@@ -2,7 +2,7 @@ from decimal import Decimal
 from datetime import date
 from typing import Optional
 from sqlmodel import Session, select
-from app.models.account import Account, AccountType
+from app.models.account import Account, AccountType, AccountSubtype
 from app.models.journal_entry import JournalEntry, JournalEntryLine, JournalEntryStatus
 
 
@@ -100,7 +100,7 @@ def get_cash_flow_statement(start_date: date, end_date: date, session: Session) 
     stmt = (
         select(Account)
         .where(Account.account_type == AccountType.ASSET)
-        .where(Account.account_subtype.in_(["checking", "savings"]))
+        .where(Account.account_subtype.in_([AccountSubtype.CHECKING, AccountSubtype.SAVINGS]))
     )
     cash_accounts = list(session.exec(stmt).all())
     cash_account_ids = {a.id for a in cash_accounts}

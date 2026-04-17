@@ -161,7 +161,7 @@ def calculate_tax_summary(tax_year_id: int, gross_income: Decimal, session: Sess
     adjustments = Decimal("0")
     agi = gross_income - adjustments
     if tax_year.deduction_type == DeductionType.STANDARD:
-        deduction_amount = STANDARD_DEDUCTIONS_2024.get(tax_year.filing_status, Decimal("14600"))
+        deduction_amount = STANDARD_DEDUCTIONS_2024.get(tax_year.filing_status, STANDARD_DEDUCTIONS_2024[FilingStatus.SINGLE])
     else:
         deduction_amount = sum(Decimal(str(d.amount)) for d in tax_year.deductions)
     taxable_income = max(agi - deduction_amount, Decimal("0"))
