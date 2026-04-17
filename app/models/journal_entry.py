@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from sqlalchemy import Numeric, Column
 from sqlmodel import SQLModel, Field, Relationship
@@ -20,8 +20,8 @@ class JournalEntry(SQLModel, table=True):
     reference: Optional[str] = None
     status: JournalEntryStatus = Field(default=JournalEntryStatus.DRAFT)
     notes: Optional[str] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     lines: list["JournalEntryLine"] = Relationship(back_populates="journal_entry")
 
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from sqlalchemy import Numeric, Column
 from sqlmodel import SQLModel, Field, Relationship
@@ -35,7 +35,7 @@ class TaxYear(SQLModel, table=True):
     deduction_type: DeductionType = Field(default=DeductionType.STANDARD)
     exemptions: int = Field(default=1)
     notes: Optional[str] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     deductions: list["TaxDeduction"] = Relationship(back_populates="tax_year")
     payments: list["TaxPayment"] = Relationship(back_populates="tax_year")
 

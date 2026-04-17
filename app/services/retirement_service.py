@@ -1,5 +1,5 @@
 from decimal import Decimal
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Optional
 from sqlmodel import Session, select
 from fastapi import HTTPException
@@ -33,7 +33,7 @@ def update_retirement_account(account_id: int, data: RetirementAccountUpdate, se
     update_data = data.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(account, key, value)
-    account.updated_at = datetime.utcnow()
+    account.updated_at = datetime.now(timezone.utc)
     session.add(account)
     session.commit()
     session.refresh(account)
@@ -48,7 +48,7 @@ def add_contribution(account_id: int, data: RetirementContributionCreate, sessio
     session.add(contribution)
     total = Decimal(str(data.employee_contribution)) + Decimal(str(data.employer_contribution))
     account.current_balance = Decimal(str(account.current_balance)) + total
-    account.updated_at = datetime.utcnow()
+    account.updated_at = datetime.now(timezone.utc)
     session.add(account)
     session.commit()
     session.refresh(contribution)

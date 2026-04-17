@@ -1,5 +1,5 @@
 from decimal import Decimal
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Optional
 from sqlmodel import Session, select
 from fastapi import HTTPException
@@ -64,7 +64,7 @@ def post_journal_entry(entry_id: int, session: Session) -> JournalEntry:
             detail=f"Debits ({total_debits}) must equal credits ({total_credits})"
         )
     entry.status = JournalEntryStatus.POSTED
-    entry.updated_at = datetime.utcnow()
+    entry.updated_at = datetime.now(timezone.utc)
     session.add(entry)
     session.commit()
     session.refresh(entry)
@@ -78,7 +78,7 @@ def void_journal_entry(entry_id: int, session: Session) -> JournalEntry:
     if entry.status == JournalEntryStatus.VOIDED:
         raise HTTPException(status_code=400, detail="Entry is already voided")
     entry.status = JournalEntryStatus.VOIDED
-    entry.updated_at = datetime.utcnow()
+    entry.updated_at = datetime.now(timezone.utc)
     session.add(entry)
     session.commit()
     session.refresh(entry)

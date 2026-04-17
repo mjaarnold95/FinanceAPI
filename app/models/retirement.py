@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from sqlalchemy import Numeric, Column
 from sqlmodel import SQLModel, Field, Relationship
@@ -40,8 +40,8 @@ class RetirementAccount(SQLModel, table=True):
     current_balance: Decimal = Field(default=Decimal("0"), sa_column=Column(Numeric(14, 2)))
     is_active: bool = Field(default=True)
     notes: Optional[str] = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     contributions: list["RetirementContribution"] = Relationship(back_populates="retirement_account")
 
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional
@@ -65,5 +65,5 @@ class Account(SQLModel, table=True):
     is_active: bool = Field(default=True)
     normal_balance: NormalBalance
     parent_id: Optional[int] = Field(default=None, foreign_key="accounts.id")
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

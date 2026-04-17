@@ -1,5 +1,5 @@
 from decimal import Decimal
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from sqlmodel import Session, select
 from app.models.account import Account, AccountType
@@ -39,7 +39,7 @@ def update_account(account_id: int, data: AccountUpdate, session: Session) -> Op
     update_data = data.model_dump(exclude_unset=True)
     for key, value in update_data.items():
         setattr(account, key, value)
-    account.updated_at = datetime.utcnow()
+    account.updated_at = datetime.now(timezone.utc)
     session.add(account)
     session.commit()
     session.refresh(account)
@@ -51,7 +51,7 @@ def deactivate_account(account_id: int, session: Session) -> Optional[Account]:
     if not account:
         return None
     account.is_active = False
-    account.updated_at = datetime.utcnow()
+    account.updated_at = datetime.now(timezone.utc)
     session.add(account)
     session.commit()
     session.refresh(account)
