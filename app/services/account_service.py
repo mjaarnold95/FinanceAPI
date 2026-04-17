@@ -1,6 +1,6 @@
+from __future__ import annotations
 from decimal import Decimal
 from datetime import datetime, timezone
-from typing import Optional
 from sqlmodel import Session, select
 from app.models.account import Account, AccountType
 from app.models.journal_entry import JournalEntryLine, JournalEntryStatus, JournalEntry
@@ -15,13 +15,13 @@ def create_account(data: AccountCreate, session: Session) -> Account:
     return account
 
 
-def get_account(account_id: int, session: Session) -> Optional[Account]:
+def get_account(account_id: int, session: Session) -> Account | None:
     return session.get(Account, account_id)
 
 
 def get_accounts(
     session: Session,
-    account_type: Optional[AccountType] = None,
+    account_type: AccountType | None = None,
     active_only: bool = True,
 ) -> list[Account]:
     stmt = select(Account)
@@ -32,7 +32,7 @@ def get_accounts(
     return list(session.exec(stmt).all())
 
 
-def update_account(account_id: int, data: AccountUpdate, session: Session) -> Optional[Account]:
+def update_account(account_id: int, data: AccountUpdate, session: Session) -> Account | None:
     account = session.get(Account, account_id)
     if not account:
         return None
@@ -46,7 +46,7 @@ def update_account(account_id: int, data: AccountUpdate, session: Session) -> Op
     return account
 
 
-def deactivate_account(account_id: int, session: Session) -> Optional[Account]:
+def deactivate_account(account_id: int, session: Session) -> Account | None:
     account = session.get(Account, account_id)
     if not account:
         return None
@@ -58,7 +58,7 @@ def deactivate_account(account_id: int, session: Session) -> Optional[Account]:
     return account
 
 
-def get_account_balance(account_id: int, session: Session) -> Optional[Decimal]:
+def get_account_balance(account_id: int, session: Session) -> Decimal | None:
     account = session.get(Account, account_id)
     if not account:
         return None

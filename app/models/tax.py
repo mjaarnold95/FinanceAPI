@@ -1,12 +1,11 @@
-from enum import Enum
+from enum import StrEnum
 from datetime import date, datetime, timezone
 from decimal import Decimal
 from sqlalchemy import Numeric, Column
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional
 
 
-class FilingStatus(str, Enum):
+class FilingStatus(StrEnum):
     SINGLE = "single"
     MARRIED_FILING_JOINTLY = "married_filing_jointly"
     MARRIED_FILING_SEPARATELY = "married_filing_separately"
@@ -14,12 +13,12 @@ class FilingStatus(str, Enum):
     QUALIFYING_WIDOW = "qualifying_widow"
 
 
-class DeductionType(str, Enum):
+class DeductionType(StrEnum):
     STANDARD = "standard"
     ITEMIZED = "itemized"
 
 
-class TaxPaymentType(str, Enum):
+class TaxPaymentType(StrEnum):
     WITHHOLDING = "withholding"
     ESTIMATED_QUARTERLY = "estimated_quarterly"
     EXTENSION = "extension"
@@ -29,12 +28,12 @@ class TaxPaymentType(str, Enum):
 
 class TaxYear(SQLModel, table=True):
     __tablename__ = "tax_years"
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     year: int = Field(index=True)
     filing_status: FilingStatus
     deduction_type: DeductionType = Field(default=DeductionType.STANDARD)
     exemptions: int = Field(default=1)
-    notes: Optional[str] = None
+    notes: str | None = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     deductions: list["TaxDeduction"] = Relationship(back_populates="tax_year")
     payments: list["TaxPayment"] = Relationship(back_populates="tax_year")
@@ -42,21 +41,21 @@ class TaxYear(SQLModel, table=True):
 
 class TaxDeduction(SQLModel, table=True):
     __tablename__ = "tax_deductions"
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     tax_year_id: int = Field(foreign_key="tax_years.id")
     description: str
     amount: Decimal = Field(sa_column=Column(Numeric(12, 2)))
     category: str
-    notes: Optional[str] = None
-    tax_year: Optional[TaxYear] = Relationship(back_populates="deductions")
+    notes: str | None = None
+    tax_year: TaxYear | None = Relationship(back_populates="deductions")
 
 
 class TaxPayment(SQLModel, table=True):
     __tablename__ = "tax_payments"
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     tax_year_id: int = Field(foreign_key="tax_years.id")
     payment_date: date
     amount: Decimal = Field(sa_column=Column(Numeric(12, 2)))
     payment_type: TaxPaymentType
-    notes: Optional[str] = None
-    tax_year: Optional[TaxYear] = Relationship(back_populates="payments")
+    notes: str | None = None
+    tax_year: TaxYear | None = Relationship(back_populates="payments")

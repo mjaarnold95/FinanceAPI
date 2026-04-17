@@ -1,6 +1,6 @@
+from __future__ import annotations
 from decimal import Decimal
 from datetime import date, datetime, timezone
-from typing import Optional
 from sqlmodel import Session, select
 from fastapi import HTTPException
 from app.models.journal_entry import JournalEntry, JournalEntryLine, JournalEntryStatus
@@ -30,15 +30,15 @@ def create_journal_entry(data: JournalEntryCreate, session: Session) -> JournalE
     return entry
 
 
-def get_journal_entry(entry_id: int, session: Session) -> Optional[JournalEntry]:
+def get_journal_entry(entry_id: int, session: Session) -> JournalEntry | None:
     return session.get(JournalEntry, entry_id)
 
 
 def get_journal_entries(
     session: Session,
-    start_date: Optional[date] = None,
-    end_date: Optional[date] = None,
-    status: Optional[JournalEntryStatus] = None,
+    start_date: date | None = None,
+    end_date: date | None = None,
+    status: JournalEntryStatus | None = None,
 ) -> list[JournalEntry]:
     stmt = select(JournalEntry)
     if start_date:

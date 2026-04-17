@@ -1,6 +1,6 @@
+from __future__ import annotations
 from decimal import Decimal
 from datetime import date
-from typing import Optional
 from sqlmodel import Session, select
 from app.models.payroll import PayPeriod, PayStub, PayStubLineItem, PayStubLineType
 from app.schemas.payroll import PayPeriodCreate, PayStubCreate, YTDSummary
@@ -14,7 +14,7 @@ def create_pay_period(data: PayPeriodCreate, session: Session) -> PayPeriod:
     return period
 
 
-def get_pay_period(period_id: int, session: Session) -> Optional[PayPeriod]:
+def get_pay_period(period_id: int, session: Session) -> PayPeriod | None:
     return session.get(PayPeriod, period_id)
 
 
@@ -44,7 +44,7 @@ def create_pay_stub(period_id: int, data: PayStubCreate, session: Session) -> Pa
     return stub
 
 
-def get_pay_stub(stub_id: int, session: Session) -> Optional[PayStub]:
+def get_pay_stub(stub_id: int, session: Session) -> PayStub | None:
     return session.get(PayStub, stub_id)
 
 

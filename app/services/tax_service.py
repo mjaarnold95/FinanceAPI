@@ -1,5 +1,5 @@
+from __future__ import annotations
 from decimal import Decimal
-from typing import Optional
 from sqlmodel import Session, select
 from fastapi import HTTPException
 from app.models.tax import TaxYear, TaxDeduction, TaxPayment, FilingStatus, DeductionType
@@ -93,7 +93,7 @@ def create_tax_year(data: TaxYearCreate, session: Session) -> TaxYear:
     return tax_year
 
 
-def get_tax_year(tax_year_id: int, session: Session) -> Optional[TaxYear]:
+def get_tax_year(tax_year_id: int, session: Session) -> TaxYear | None:
     return session.get(TaxYear, tax_year_id)
 
 
@@ -101,7 +101,7 @@ def get_tax_years(session: Session) -> list[TaxYear]:
     return list(session.exec(select(TaxYear)).all())
 
 
-def update_tax_year(tax_year_id: int, data: TaxYearUpdate, session: Session) -> Optional[TaxYear]:
+def update_tax_year(tax_year_id: int, data: TaxYearUpdate, session: Session) -> TaxYear | None:
     tax_year = session.get(TaxYear, tax_year_id)
     if not tax_year:
         return None

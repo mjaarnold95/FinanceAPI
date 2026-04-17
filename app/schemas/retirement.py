@@ -1,49 +1,49 @@
+from __future__ import annotations
 from datetime import date, datetime
 from decimal import Decimal
-from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from app.models.retirement import RetirementAccountType, ContributionType
 
 
 class RetirementAccountCreate(BaseModel):
-    account_id: Optional[int] = None
+    account_id: int | None = None
     name: str
     institution: str
     account_type: RetirementAccountType
     annual_contribution_limit: Decimal
     catch_up_limit: Decimal = Decimal("0")
-    employer_match_percent: Optional[Decimal] = None
-    employer_match_limit_percent: Optional[Decimal] = None
+    employer_match_percent: Decimal | None = None
+    employer_match_limit_percent: Decimal | None = None
     current_balance: Decimal = Decimal("0")
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class RetirementAccountUpdate(BaseModel):
-    name: Optional[str] = None
-    institution: Optional[str] = None
-    annual_contribution_limit: Optional[Decimal] = None
-    catch_up_limit: Optional[Decimal] = None
-    employer_match_percent: Optional[Decimal] = None
-    employer_match_limit_percent: Optional[Decimal] = None
-    current_balance: Optional[Decimal] = None
-    is_active: Optional[bool] = None
-    notes: Optional[str] = None
+    name: str | None = None
+    institution: str | None = None
+    annual_contribution_limit: Decimal | None = None
+    catch_up_limit: Decimal | None = None
+    employer_match_percent: Decimal | None = None
+    employer_match_limit_percent: Decimal | None = None
+    current_balance: Decimal | None = None
+    is_active: bool | None = None
+    notes: str | None = None
 
 
 class RetirementAccountRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
-    account_id: Optional[int] = None
+    account_id: int | None = None
     name: str
     institution: str
     account_type: RetirementAccountType
     annual_contribution_limit: Decimal
     catch_up_limit: Decimal
-    employer_match_percent: Optional[Decimal] = None
-    employer_match_limit_percent: Optional[Decimal] = None
+    employer_match_percent: Decimal | None = None
+    employer_match_limit_percent: Decimal | None = None
     current_balance: Decimal
     is_active: bool
-    notes: Optional[str] = None
+    notes: str | None = None
     created_at: datetime
     updated_at: datetime
 
@@ -53,7 +53,7 @@ class RetirementContributionCreate(BaseModel):
     employee_contribution: Decimal = Decimal("0")
     employer_contribution: Decimal = Decimal("0")
     contribution_type: ContributionType
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class RetirementContributionRead(BaseModel):
@@ -64,7 +64,7 @@ class RetirementContributionRead(BaseModel):
     employee_contribution: Decimal
     employer_contribution: Decimal
     contribution_type: ContributionType
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class YTDContributionSummary(BaseModel):

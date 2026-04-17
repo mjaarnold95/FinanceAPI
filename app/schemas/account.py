@@ -1,5 +1,5 @@
+from __future__ import annotations
 from datetime import datetime
-from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from app.models.account import AccountType, AccountSubtype, NormalBalance
 
@@ -8,18 +8,18 @@ class AccountCreate(BaseModel):
     name: str
     account_type: AccountType
     account_subtype: AccountSubtype
-    description: Optional[str] = None
+    description: str | None = None
     currency: str = "USD"
     normal_balance: NormalBalance
-    parent_id: Optional[int] = None
+    parent_id: int | None = None
 
 
 class AccountUpdate(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    currency: Optional[str] = None
-    is_active: Optional[bool] = None
-    parent_id: Optional[int] = None
+    name: str | None = None
+    description: str | None = None
+    currency: str | None = None
+    is_active: bool | None = None
+    parent_id: int | None = None
 
 
 class AccountRead(BaseModel):
@@ -28,11 +28,11 @@ class AccountRead(BaseModel):
     name: str
     account_type: AccountType
     account_subtype: AccountSubtype
-    description: Optional[str] = None
+    description: str | None = None
     currency: str
     is_active: bool
     normal_balance: NormalBalance
-    parent_id: Optional[int] = None
+    parent_id: int | None = None
     created_at: datetime
     updated_at: datetime
 

@@ -1,4 +1,4 @@
-from typing import Optional
+from __future__ import annotations
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 from app.database import get_session
@@ -16,7 +16,7 @@ def create_account(data: AccountCreate, session: Session = Depends(get_session))
 
 @router.get("/accounts", response_model=list[AccountSummary])
 def list_accounts(
-    account_type: Optional[AccountType] = None,
+    account_type: AccountType | None = None,
     active_only: bool = True,
     session: Session = Depends(get_session),
 ):

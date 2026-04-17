@@ -1,6 +1,6 @@
+from __future__ import annotations
 from datetime import date, datetime
 from decimal import Decimal
-from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from app.models.tax import FilingStatus, DeductionType, TaxPaymentType
 
@@ -10,21 +10,21 @@ class TaxYearCreate(BaseModel):
     filing_status: FilingStatus
     deduction_type: DeductionType = DeductionType.STANDARD
     exemptions: int = 1
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class TaxYearUpdate(BaseModel):
-    filing_status: Optional[FilingStatus] = None
-    deduction_type: Optional[DeductionType] = None
-    exemptions: Optional[int] = None
-    notes: Optional[str] = None
+    filing_status: FilingStatus | None = None
+    deduction_type: DeductionType | None = None
+    exemptions: int | None = None
+    notes: str | None = None
 
 
 class TaxDeductionCreate(BaseModel):
     description: str
     amount: Decimal
     category: str
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class TaxDeductionRead(BaseModel):
@@ -34,14 +34,14 @@ class TaxDeductionRead(BaseModel):
     description: str
     amount: Decimal
     category: str
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class TaxPaymentCreate(BaseModel):
     payment_date: date
     amount: Decimal
     payment_type: TaxPaymentType
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class TaxPaymentRead(BaseModel):
@@ -51,7 +51,7 @@ class TaxPaymentRead(BaseModel):
     payment_date: date
     amount: Decimal
     payment_type: TaxPaymentType
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class TaxYearRead(BaseModel):
@@ -61,7 +61,7 @@ class TaxYearRead(BaseModel):
     filing_status: FilingStatus
     deduction_type: DeductionType
     exemptions: int
-    notes: Optional[str] = None
+    notes: str | None = None
     created_at: datetime
     deductions: list[TaxDeductionRead] = []
     payments: list[TaxPaymentRead] = []

@@ -1,6 +1,6 @@
+from __future__ import annotations
 from datetime import date, datetime
 from decimal import Decimal
-from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from app.models.payroll import PayPeriodFrequency, PayStubLineType
 
@@ -11,7 +11,7 @@ class PayPeriodCreate(BaseModel):
     period_end: date
     pay_date: date
     frequency: PayPeriodFrequency
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 class PayPeriodRead(BaseModel):
@@ -22,7 +22,7 @@ class PayPeriodRead(BaseModel):
     period_end: date
     pay_date: date
     frequency: PayPeriodFrequency
-    notes: Optional[str] = None
+    notes: str | None = None
     created_at: datetime
 
 
@@ -48,7 +48,7 @@ class PayStubCreate(BaseModel):
     net_pay: Decimal
     total_taxes: Decimal
     total_deductions: Decimal
-    notes: Optional[str] = None
+    notes: str | None = None
     line_items: list[PayStubLineItemCreate] = []
 
 
@@ -60,7 +60,7 @@ class PayStubRead(BaseModel):
     net_pay: Decimal
     total_taxes: Decimal
     total_deductions: Decimal
-    notes: Optional[str] = None
+    notes: str | None = None
     created_at: datetime
     line_items: list[PayStubLineItemRead] = []
 

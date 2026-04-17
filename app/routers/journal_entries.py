@@ -1,5 +1,5 @@
+from __future__ import annotations
 from datetime import date
-from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 from app.database import get_session
@@ -17,9 +17,9 @@ def create_journal_entry(data: JournalEntryCreate, session: Session = Depends(ge
 
 @router.get("/journal-entries", response_model=list[JournalEntryRead])
 def list_journal_entries(
-    start_date: Optional[date] = None,
-    end_date: Optional[date] = None,
-    status: Optional[JournalEntryStatus] = None,
+    start_date: date | None = None,
+    end_date: date | None = None,
+    status: JournalEntryStatus | None = None,
     session: Session = Depends(get_session),
 ):
     return journal_entry_service.get_journal_entries(session, start_date, end_date, status)

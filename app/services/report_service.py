@@ -1,6 +1,6 @@
+from __future__ import annotations
 from decimal import Decimal
 from datetime import date
-from typing import Optional
 from sqlmodel import Session, select
 from app.models.account import Account, AccountType, AccountSubtype
 from app.models.journal_entry import JournalEntry, JournalEntryLine, JournalEntryStatus
@@ -9,9 +9,9 @@ from app.models.journal_entry import JournalEntry, JournalEntryLine, JournalEntr
 def _get_account_balances(
     session: Session,
     account_types: list[AccountType],
-    as_of_date: Optional[date] = None,
-    start_date: Optional[date] = None,
-    end_date: Optional[date] = None,
+    as_of_date: date | None = None,
+    start_date: date | None = None,
+    end_date: date | None = None,
 ) -> dict[int, Decimal]:
     """Compute balance for each account of the given types."""
     stmt = (

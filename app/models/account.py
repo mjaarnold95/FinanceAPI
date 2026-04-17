@@ -1,11 +1,10 @@
-from enum import Enum
+from enum import StrEnum
 from datetime import datetime, timezone
 from decimal import Decimal
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional
 
 
-class AccountType(str, Enum):
+class AccountType(StrEnum):
     ASSET = "asset"
     LIABILITY = "liability"
     EQUITY = "equity"
@@ -13,12 +12,12 @@ class AccountType(str, Enum):
     EXPENSE = "expense"
 
 
-class NormalBalance(str, Enum):
+class NormalBalance(StrEnum):
     DEBIT = "debit"
     CREDIT = "credit"
 
 
-class AccountSubtype(str, Enum):
+class AccountSubtype(StrEnum):
     # Asset subtypes
     CHECKING = "checking"
     SAVINGS = "savings"
@@ -56,14 +55,14 @@ class AccountSubtype(str, Enum):
 
 class Account(SQLModel, table=True):
     __tablename__ = "accounts"
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     account_type: AccountType
     account_subtype: AccountSubtype
-    description: Optional[str] = None
+    description: str | None = None
     currency: str = Field(default="USD")
     is_active: bool = Field(default=True)
     normal_balance: NormalBalance
-    parent_id: Optional[int] = Field(default=None, foreign_key="accounts.id")
+    parent_id: int | None = Field(default=None, foreign_key="accounts.id")
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

@@ -1,6 +1,6 @@
+from __future__ import annotations
 from decimal import Decimal
 from datetime import date, datetime, timezone
-from typing import Optional
 from sqlmodel import Session, select
 from fastapi import HTTPException
 from app.models.retirement import RetirementAccount, RetirementContribution
@@ -18,7 +18,7 @@ def create_retirement_account(data: RetirementAccountCreate, session: Session) -
     return account
 
 
-def get_retirement_account(account_id: int, session: Session) -> Optional[RetirementAccount]:
+def get_retirement_account(account_id: int, session: Session) -> RetirementAccount | None:
     return session.get(RetirementAccount, account_id)
 
 
@@ -26,7 +26,7 @@ def get_retirement_accounts(session: Session) -> list[RetirementAccount]:
     return list(session.exec(select(RetirementAccount)).all())
 
 
-def update_retirement_account(account_id: int, data: RetirementAccountUpdate, session: Session) -> Optional[RetirementAccount]:
+def update_retirement_account(account_id: int, data: RetirementAccountUpdate, session: Session) -> RetirementAccount | None:
     account = session.get(RetirementAccount, account_id)
     if not account:
         return None
